@@ -30,8 +30,16 @@ type ActionObservation struct {
 
 type ActionParameters struct {
 
-	// +kubebuilder:validation:Required
-	ActionGroupID *string `json:"actionGroupId" tf:"action_group_id,omitempty"`
+	// +crossplane:generate:reference:type=MonitorActionGroup
+	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-jet-azure/apis/rconfig.ExtractResourceID()
+	// +kubebuilder:validation:Optional
+	ActionGroupID *string `json:"actionGroupId,omitempty" tf:"action_group_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ActionGroupIDRef *v1.Reference `json:"actionGroupIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	ActionGroupIDSelector *v1.Selector `json:"actionGroupIdSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	WebhookProperties map[string]*string `json:"webhookProperties,omitempty" tf:"webhook_properties,omitempty"`

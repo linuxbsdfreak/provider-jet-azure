@@ -85,8 +85,16 @@ type MonitorDiagnosticSettingParameters struct {
 	// +kubebuilder:validation:Optional
 	LogAnalyticsDestinationType *string `json:"logAnalyticsDestinationType,omitempty" tf:"log_analytics_destination_type,omitempty"`
 
+	// +crossplane:generate:reference:type=Workspace
+	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-jet-azure/apis/rconfig.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	LogAnalyticsWorkspaceID *string `json:"logAnalyticsWorkspaceId,omitempty" tf:"log_analytics_workspace_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	LogAnalyticsWorkspaceIDRef *v1.Reference `json:"logAnalyticsWorkspaceIdRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	LogAnalyticsWorkspaceIDSelector *v1.Selector `json:"logAnalyticsWorkspaceIdSelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Metric []MetricParameters `json:"metric,omitempty" tf:"metric,omitempty"`
