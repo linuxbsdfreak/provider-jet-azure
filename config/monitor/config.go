@@ -33,10 +33,34 @@ func Configure(p *config.Provider) {
 			"resource_group_name": config.Reference{
 				Type: rconfig.ResourceGroupReferencePath,
 			},
+		r.References = config.Reference{
+			"action.action_group_id": config.Reference{
+				Type: "MonitorActionGroup",
+				Extractor: rconfig.ExtractResourceIDFuncPath,
+			}
 		}
+
+		r.UseAsync = true
 		r.ExternalName = config.NameAsIdentifier
 		r.ExternalName.GetExternalNameFn = common.GetNameFromFullyQualifiedID
 		// /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1/providers/Microsoft.Insights/metricAlerts/example-metricalert
 		r.ExternalName.GetIDFn = common.GetFullyQualifiedIDFn("Microsoft.Insights", "metricAlerts", "name")
 	})
+
+	p.AddResourceConfigurator("azurerm_monitor_diagnostic_setting", func (r *config.Resource) {
+		    r.Version = common.VersionV1Alpha1
+			r.References = config.Reference{
+				"log_analytics_workspace_id": config.Reference{
+					Type: "Workspace",
+					Extractor: rconfig.ExtractResourceIDFuncPath,
+				}
+			}
+	
+			r.UseAsync = true
+			r.ExternalName = config.NameAsIdentifier
+			r.ExternalName.GetExternalNameFn = common.GetNameFromFullyQualifiedID
+			// /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mygroup1/providers/Microsoft.Insights/metricAlerts/example-metricalert
+			r.ExternalName.GetIDFn = common.GetFullyQualifiedIDFn("Microsoft.Insights", "diagnosticSettings", "name")
+    })
+
 }
